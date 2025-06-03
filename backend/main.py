@@ -5,10 +5,19 @@ from services.product_service import ProductService, get_product_service
 from services.client_service import ClientService, get_client_service
 from database.db import init_db
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 app = FastAPI()
 
+# Configuración de CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Permite solicitudes desde este origen
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos
+    allow_headers=["*"],  # Permite todos los headers
+)
 # Initialize database before starting the application
 init_db()
 
@@ -59,4 +68,4 @@ async def delete_client(client_id: int, service: ClientService = Depends(get_cli
     return {"message": "Client deleted successfully"}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=3000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
